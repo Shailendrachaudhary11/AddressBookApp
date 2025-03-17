@@ -12,6 +12,12 @@ import lombok.Setter;
 @Setter
 public class ContactDTO {
 
+<<<<<<< HEAD
+    private String name;
+
+    private String email;
+
+=======
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
@@ -22,4 +28,5 @@ public class ContactDTO {
 
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
     private String phoneNumber;
+>>>>>>> fb8ad4274f09589816b9f68edc57b5823f4b45ee
 }
