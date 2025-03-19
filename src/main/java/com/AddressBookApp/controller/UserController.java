@@ -1,28 +1,34 @@
 package com.AddressBookApp.controller;
 
 import com.AddressBookApp.dto.UserDTO;
-import com.AddressBookApp.model.User;
 import com.AddressBookApp.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")  // Ensure this matches SecurityConfig
+@RequestMapping("/users")
+@Tag(name = "User API", description = "Operations related to user management")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserDTO userDTO) {
-        User registeredUser = userService.registerUser(userDTO);
-        return ResponseEntity.ok(registeredUser);
+    @Operation(summary = "Register a new user", description = "Creates a new user account with encrypted password")
+    public String registerUser(@RequestBody UserDTO userDTO) {
+        try {
+            userService.registerUser(userDTO);
+            return "User registered successfully!";
+        } catch (Exception e) {
+            return "Error during registration: " + e.getMessage();
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserDTO userDTO) {
-        String response = userService.loginUser(userDTO);
-        return ResponseEntity.ok(response);
+    @Operation(summary = "User Login", description = "Validates user credentials and returns login status")
+    public String loginUser(@RequestBody UserDTO userDTO) {
+        return userService.loginUser(userDTO);
     }
 }
